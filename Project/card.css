@@ -1,0 +1,276 @@
+@import url('https://fonts.googleapis.com/css?family=Krub:400,700');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.gap{
+    padding-top: 17rem;
+}
+/* Style the container of the dropdown */
+#navDropdown {
+  font-family: 'Krub', sans-serif;
+  display: flex;
+align-items: center;
+padding: 5px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: rgb(20, 183, 220);
+  color: #fff;
+  cursor: pointer;
+  width: 150px;
+  margin-right:50px;
+}
+
+/* Style the options in the dropdown */
+#navDropdown option {
+  padding: 8px;
+  background-color: #f9f9f9;
+  color: #444;
+  margin-left:15px;
+}
+
+/* Change the style of the selected option */
+#navDropdown option:checked {
+  background-color: #4CAF50;
+  color: #fff;
+}
+
+/* Hide the default arrow icon in Firefox */
+#navDropdown::-moz-focus-inner {
+  border: 0;
+}
+
+/* Hide the arrow icon in Chrome, Safari, and Edge */
+#navDropdown::-webkit-select-placeholder {
+  color: transparent;
+}
+
+/* Style the arrow icon */
+#navDropdown::after {
+  content: "▼";
+  font-size: 12px;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.custom-button {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    background-color: rgb(20, 183, 220);
+    margin-right: 50px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    
+  }
+  
+  .custom-button:hover {
+    background-color:rgb(20, 117, 220);;
+  }
+  
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background-image:url(uploads/7676.jpg);
+  font-family: 'Krub', sans-serif;
+ 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.name{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    animation:fadeInMove 2s ease-in;
+}
+.card {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 400px;
+  height: 600px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px 5px rgba(0, 0, 0, 0.2);
+  background: rgb(194, 225, 227);
+  overflow: hidden;
+}
+
+
+.ds-info {
+    padding-top: 2rem;
+    display: flex;
+    justify-content: center;
+    animation-fill-mode: forwards;
+    
+  }
+  
+  .ds-info > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-left: 5rem;
+    
+    animation: fadeInMove 2s;
+    animation-fill-mode: forwards;
+    
+    
+  }
+  
+  
+  
+  input[type="text"],
+  input[type="password"],
+  input[type="file"] {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    text-align: center;
+  }
+  .ds-top {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 300px;
+    height: 80px;
+    background: rgb(99, 182, 200);
+    animation: dsTop 1.5s;
+  }
+.ds-top{
+    padding-bottom: 12rem;
+}
+.card .ds-top {
+  position: absolute;
+  margin: auto;
+  
+  top: 0;
+  right: 0;
+  left: 0;
+  width: 400px;
+  height: 80px;
+  background: rgb(99, 182, 200);
+  animation: dsTop 1.5s;
+}
+
+.card .avatar-holder {
+  position: absolute;
+  margin: auto;
+  top: 40px;
+  right: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 5px #f8f8f8,
+              inset 0 0 0 5px #f8f8f8,
+              inset 0 0 0 5px #f8f8f8,
+              inset 0 0 0 5px #f8f8f8,
+              inset 0 0 0 5px #f8f8f8;
+  background: white;
+  overflow: hidden;
+  animation: mvTop 1.5s;
+}
+
+
+.card .avatar-holder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+@keyframes fadeInMove {
+  0% {
+    opacity: 0;
+    left: -300px;
+  }
+  100% {
+    opacity: 1;
+    left: 0;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes htmlSkill {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 95%;
+  }
+}
+
+@keyframes cssSkill {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 90%;
+  }
+}
+
+@keyframes jsSkill {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 75%;
+  }
+}
+
+@keyframes mvBottom {
+  0% {
+    bottom: -150px;
+  }
+  100% {
+    bottom: 10px;
+  }
+}
+
+@keyframes mvTop {
+  0% {
+    top: -150px;
+  }
+  100% {
+    top: 40px;
+  }
+}
+
+@keyframes dsTop {
+  0% {
+    top: -150px;
+  }
+  100% {
+    top: 0;
+  }
+}

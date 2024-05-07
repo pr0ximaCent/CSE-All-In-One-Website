@@ -1,0 +1,85 @@
+body {
+  background: url("bg-5.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  font-family: 'Krub', sans-serif;
+
+  display: flex;
+  justify-content: center;
+  min-height: 60vh;
+}
+
+.all-complaints-section {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  
+}
+
+h2 {
+  text-align: center;
+  color: #f8f1f1;
+}
+
+.complaint {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-template-rows: auto 1fr auto;
+  height: 600px;
+  width: 800px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 600px;
+  background-color: rgba(224, 229, 236, 0.8);
+  max-height: 100vh;
+  flex-grow: 1;
+  margin-bottom: 20px;
+  overflow-y: auto;
+  
+  /* Center items horizontally within the grid cells */
+  justify-items: center;
+}
+
+
+.complaint p {
+  margin-bottom: 10px;
+  color: #000000;
+}
+
+.complaint img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.upvote-button {
+  background-color: #bc6202;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.upvote-button:hover {
+  background-color: #bc3102;
+}
+
+/* Additional styles for responsiveness */
+@media (max-width: 500px) {
+  .all-complaints-section {
+    padding: 10px;
+  }
+  
+  .complaint {
+    padding: 10px;
+  }
+  
+  .upvote-button {
+    font-size: 14px;
+  }
+}

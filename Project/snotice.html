@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Notice Board</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <div class="ff">
+  <div class="con">
+    <h1>Notice Board</h1>
+
+    <div class="box">
+      <div class="form-container">
+        <form id="notice-form">
+          <label for="title">Title:</label>
+          <input type="text" id="title" required>
+
+          <label for="notice-type">Notice Type:</label>
+          <select id="notice-type">
+            <option value="urgent">Urgent</option>
+            <option value="moderate">Moderate</option>
+            <option value="normal">Normal</option>
+          </select>
+
+          <label for="room-number">Room Number:</label>
+          <input type="text" id="room-number" required>
+
+          <label for="description">Description:</label>
+          <textarea id="description" required></textarea>
+
+          <button type="submit">Publish Notice</button>
+        </form>
+      </div>
+
+      <div id="notice-board"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <h2>Notices</h2>
+  </div>
+
+  <a href="notices.html">View All Notices</a>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="notices.js"></script>
+</div>
+</body>
+
+</html>

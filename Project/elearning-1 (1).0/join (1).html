@@ -1,0 +1,73 @@
+
+    
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>joining club</title>
+            <link href="css/style.css" rel="stylesheet">
+            <link href="css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+        </head>
+        <body>
+           
+        
+            <div class="f">
+                <h2>Club Membership Form</h2>
+                <form action="connect.php" method="POST">
+                    <div>
+                        <label for="firstName">First Name:</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+            
+                    <div>
+                        <label for="lastName">Last Name:</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+            
+                    <div>
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+            
+                    <div>
+                        <label for="phone">Phone:</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+            
+                    <div>
+                        <label for="address">Address:</label>
+                        <textarea id="address" name="address" rows="4" required></textarea>
+                    </div>
+                    <div>
+                        <label for="joinReason">Why do you want to join our club?</label>
+                        <textarea id="joinReason" name="joinReason" rows="4" required></textarea>
+                    </div>
+                    
+                   
+            
+                    <p><b>Payment Method:</b></p>
+                    <div>
+                        <input type="radio" id="method1" name="paymentMethod" value="method1" required>
+                        <label for="method1">Bkash</label><br>
+            
+                        <input type="radio" id="method2" name="paymentMethod" value="method2">
+                        <label for="method2">Rocket</label><br>
+            
+                        <input type="radio" id="method3" name="paymentMethod" value="method3">
+                        <label for="method3">Nogod</label>
+                    </div>
+            
+                    <div>
+                        <label for="transactionNumber">Transaction Number:</label>
+                        <input type="text" id="transactionNumber" name="transactionNumber">
+                    </div>
+            
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+            </body>
+            </html>
+            
