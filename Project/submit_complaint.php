@@ -2,13 +2,11 @@
 require_once 'cnct.php';
 session_start();
 
-// Generate CSRF token if not exists
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Validate CSRF token
     if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
         die('Invalid CSRF token.');
     }
@@ -16,19 +14,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $complaintText = trim($_POST['complaint_text']);
     $allowedTypes  = ['image/jpeg','image/png','image/gif'];
     $maxSize       = 2 * 1024 * 1024;
+    $imagePath     = null;
 
-    if (isset($_FILES['complaint_image']) && $_FILES['complaint_image']['error'] === UPLOAD_ERR_OK) {
+    if (!empty($_FILES['complaint_image']['tmp_name'])) {
         $mimeType = mime_content_type($_FILES['complaint_image']['tmp_name']);
         if (in_array($mimeType, $allowedTypes) && $_FILES['complaint_image']['size'] <= $maxSize) {
             $imagePath = 'images/' . basename($_FILES['complaint_image']['name']);
             move_uploaded_file($_FILES['complaint_image']['tmp_name'], $imagePath);
-
-            $query = "INSERT INTO complaints (text, image_path) VALUES (?, ?)";
-            $stmt  = mysqli_prepare($conn, $query);
-            mysqli_stmt_bind_param($stmt, "ss", $complaintText, $imagePath);
         } else {
-            die('Invalid image or size exceeds 2MB.');
+            $_SESSION['error'] = 'Invalid image or size exceeds 2MB.';
+            header('Location: submit_complaint.php');
+            exit;
         }
+    }
+
+    // Build query dynamically
+    if ($imagePath) {
+        $query = "INSERT INTO complaints (text, image_path) VALUES (?, ?)";
+        $stmt  = mysqli_prepare($conn, $query);
+        mysqli_stmt_bind_param($stmt, "ss", $complaintText, $imagePath);
     } else {
         $query = "INSERT INTO complaints (text) VALUES (?)";
         $stmt  = mysqli_prepare($conn, $query);
@@ -39,19 +43,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $complaintId = mysqli_insert_id($conn);
         $email       = $_SESSION['email'];
 
-        $voteQ = "INSERT INTO votes (user_email, complaint_id) VALUES (?, ?)";
-        $voteS = mysqli_prepare($conn, $voteQ);
-        mysqli_stmt_bind_param($voteS, "si", $email, $complaintId);
-        mysqli_stmt_execute($voteS);
-        mysqli_stmt_close($voteS);
+        $voteSQL = "INSERT INTO votes (user_email, complaint_id) VALUES (?, ?)";
+        $voteSt  = mysqli_prepare($conn, $voteSQL);
+        mysqli_stmt_bind_param($voteSt, "si", $email, $complaintId);
+        mysqli_stmt_execute($voteSt);
+        mysqli_stmt_close($voteSt);
 
-        header('Location: all_complaints.php?success=1');
+        $_SESSION['success'] = 'Complaint submitted successfully.';
+        header('Location: all_complaints.php');
         exit;
     } else {
-        echo "Error: " . mysqli_stmt_error($stmt);
+        $_SESSION['error'] = 'Submission error: ' . mysqli_stmt_error($stmt);
+        header('Location: submit_complaint.php');
+        exit;
     }
-
-    mysqli_stmt_close($stmt);
 }
 
 mysqli_close($conn);
@@ -68,6 +73,9 @@ mysqli_close($conn);
 </head>
 <body>
   <div class="container" style="height:95vh;">
+    <?php if (!empty($_SESSION['error'])): ?>
+      <p class="error"><?php echo htmlspecialchars($_SESSION['error']); unset($_SESSION['error']); ?></p>
+    <?php endif; ?>
     <form method="POST" action="submit_complaint.php" enctype="multipart/form-data">
       <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
 
