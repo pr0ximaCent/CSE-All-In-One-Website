@@ -1,6 +1,9 @@
 <?php
-require_once 'cnct.php';
-session_start();
+// config.php
+define('UPLOAD_DIR', __DIR__ . '/uploads/');
+define('MAX_UPLOAD_SIZE', 2 * 1024 * 1024); // 2MB
+$ALLOWED_MIME = ['image/jpeg','image/png','image/gif'];
+
 
 function handleComplaintSubmission($conn) {
     // CSRF protection
