@@ -2,47 +2,48 @@
 require_once 'cnct.php';
 session_start();
 
-// Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Get complaint details from the form (trim whitespace)
     $complaintText = trim($_POST['complaint_text']);
 
-    // Check if an image is uploaded
-    if (isset($_FILES['complaint_image']) && $_FILES['complaint_image']['error'] === UPLOAD_ERR_OK) {
-        $imageFile = $_FILES['complaint_image']['tmp_name'];
-        $imagePath = 'images/' . basename($_FILES['complaint_image']['name']);
-        move_uploaded_file($imageFile, $imagePath);
+    // Allowed image MIME types and max size
+    $allowedTypes = ['image/jpeg','image/png','image/gif'];
+    $maxSize      = 2 * 1024 * 1024; // 2MB
 
-        // Insert complaint with image path
-        $insertQuery = "INSERT INTO complaints (text, image_path) VALUES (?, ?)";
-        $statement   = mysqli_prepare($conn, $insertQuery);
-        mysqli_stmt_bind_param($statement, "ss", $complaintText, $imagePath);
+    if (isset($_FILES['complaint_image']) && $_FILES['complaint_image']['error'] === UPLOAD_ERR_OK) {
+        $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mimeType = finfo_file($fileInfo, $_FILES['complaint_image']['tmp_name']);
+        finfo_close($fileInfo);
+
+        if (in_array($mimeType, $allowedTypes) && $_FILES['complaint_image']['size'] <= $maxSize) {
+            $imagePath = 'images/' . basename($_FILES['complaint_image']['name']);
+            move_uploaded_file($_FILES['complaint_image']['tmp_name'], $imagePath);
+
+            $insertQuery = "INSERT INTO complaints (text, image_path) VALUES (?, ?)";
+            $statement   = mysqli_prepare($conn, $insertQuery);
+            mysqli_stmt_bind_param($statement, "ss", $complaintText, $imagePath);
+        } else {
+            die('Invalid image file or too large. Max 2MB, JPG/PNG/GIF only.');
+        }
     } else {
-        // Insert complaint without image
         $insertQuery = "INSERT INTO complaints (text) VALUES (?)";
         $statement   = mysqli_prepare($conn, $insertQuery);
         mysqli_stmt_bind_param($statement, "s", $complaintText);
     }
 
-    // Execute the statement
     if (mysqli_stmt_execute($statement)) {
-        $complaintId  = mysqli_insert_id($conn);
-        $userEmail    = $_SESSION['email'];
+        $complaintId = mysqli_insert_id($conn);
+        $userEmail   = $_SESSION['email'];
 
-        // Record initial vote
-        $voteInsertQuery  = "INSERT INTO votes (user_email, complaint_id) VALUES (?, ?)";
-        $voteStatement    = mysqli_prepare($conn, $voteInsertQuery);
-        mysqli_stmt_bind_param($voteStatement, "si", $userEmail, $complaintId);
-        mysqli_stmt_execute($voteStatement);
-        mysqli_stmt_close($voteStatement);
+        $voteQuery   = "INSERT INTO votes (user_email, complaint_id) VALUES (?, ?)";
+        $voteStmt    = mysqli_prepare($conn, $voteQuery);
+        mysqli_stmt_bind_param($voteStmt, "si", $userEmail, $complaintId);
+        mysqli_stmt_execute($voteStmt);
+        mysqli_stmt_close($voteStmt);
 
-        echo "<script>
-                if (confirm('Complaint submitted successfully')) {
-                    window.location.href = 'all_complaints.php';
-                }
-              </script>";
+        header('Location: all_complaints.php?success=1');
+        exit;
     } else {
-        echo "Error: " . mysqli_stmt_error($statement);
+        echo "Submission error: " . mysqli_stmt_error($statement);
     }
 
     mysqli_stmt_close($statement);
@@ -66,8 +67,8 @@ mysqli_close($conn);
       <label for="complaint_text">Complaint:</label>
       <textarea id="complaint_text" name="complaint_text" rows="4" required></textarea>
 
-      <label for="complaint_image">Image:</label>
-      <input type="file" id="complaint_image" name="complaint_image">
+      <label for="complaint_image">Image (optional, max 2MB):</label>
+      <input type="file" id="complaint_image" name="complaint_image" accept=".jpg,.jpeg,.png,.gif">
 
       <button type="submit" class="custom-btn btn-3">Submit</button>
     </form>
